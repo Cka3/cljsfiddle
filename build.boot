@@ -1,12 +1,19 @@
 (set-env!
  :source-paths    #{"src/cljs"}
  :resource-paths  #{"resources"}
- :dependencies '[[adzerk/boot-cljs          "1.7.48-6"   :scope "test"]
+ :dependencies '[;; boot
+                 [adzerk/boot-cljs          "1.7.48-6"   :scope "test"]
                  [adzerk/boot-cljs-repl     "0.2.0"      :scope "test"]
                  [adzerk/boot-reload        "0.4.1"      :scope "test"]
                  [pandeiro/boot-http        "0.6.3"      :scope "test"]
+
+                 ;; cljs
                  [org.clojure/clojurescript "1.7.122"]
-                 [reagent "0.5.0"]])
+                 [reagent "0.5.0"]
+
+                 ;; cider
+                 [cider/cider-nrepl "0.10.2"]
+                 [refactor-nrepl "2.0.0"]])
 
 (require
  '[adzerk.boot-cljs      :refer [cljs]]
@@ -16,9 +23,7 @@
 
 (deftask build []
   (comp (speak)
-        
-        (cljs)
-        ))
+        (cljs)))
 
 (deftask run []
   (comp (serve)
@@ -42,4 +47,19 @@
   (comp (development)
         (run)))
 
+(deftask cider "CIDER profile"
+  []
+  (require 'boot.repl)
+  (swap! @(resolve 'boot.repl/*default-dependencies*)
+         concat '[[org.clojure/tools.nrepl "0.2.12"]
+                  [cider/cider-nrepl "0.10.2"]
+                  [refactor-nrepl "2.0.0"]])
+  (swap! @(resolve 'boot.repl/*default-middleware*)
+         concat '[cider.nrepl/cider-middleware
+                  refactor-nrepl.middleware/wrap-refactor])
+  identity)
 
+(deftask cider-dev
+  "Adds cider middleware to the cljs thing."
+  []
+  (comp (cider) (repl) (dev)))
