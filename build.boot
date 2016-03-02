@@ -10,6 +10,7 @@
                  ;; cljs
                  [org.clojure/clojurescript "1.7.122"]
                  [reagent "0.5.0"]
+                 [replumb "0.1.5-3"]
 
                  ;; cider
                  [cider/cider-nrepl "0.10.2"]
