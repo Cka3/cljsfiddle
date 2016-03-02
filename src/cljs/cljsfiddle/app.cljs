@@ -58,7 +58,9 @@
 
 (defn my-eval [cljs-string]
   (eval-str (empty-state)
-            (str "(ns cljs-user) " cljs-string)
+            (str "(ns cljs-user)
+                  (def atom reagent.core/atom)"
+                 cljs-string)
             'dummy-symbol
             {:ns 'cljs.user
              :eval js-eval
