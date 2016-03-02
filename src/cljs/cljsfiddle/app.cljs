@@ -65,7 +65,7 @@
             {:ns 'cljs.user
              :eval js-eval
              :static-fns true
-             :def-emits-var true
+             :def-emits-var false
              :load (fn [& _] {:lang :clj :source "."})
              :context :statement}
             (fn [{:keys [error value] :as x}]
