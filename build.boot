@@ -37,7 +37,9 @@
   identity)
 
 (deftask development []
-  (task-options! cljs {:optimizations :none :source-map true}
+  (task-options! cljs {:optimizations :none
+                       :static-fns true
+                       :source-map true}
                  reload {:on-jsload 'cljsfiddle.app/init})
   identity)
 

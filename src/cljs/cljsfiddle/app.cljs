@@ -64,6 +64,7 @@
             'dummy-symbol
             {:ns 'cljs.user
              :eval js-eval
+             :static-fns true
              :def-emits-var true
              :load (fn [& _] {:lang :clj :source "."})
              :context :statement}
