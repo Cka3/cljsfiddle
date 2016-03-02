@@ -4,7 +4,8 @@
 (defn option-button [title fill]
   [:div.item
    [:div.ui.primary.button
-    {:on-click (fn [] (reset! db fill)
+    {:style {:width "100%"}
+     :on-click (fn [] (reset! db fill)
                  #_(run))}
     title]])
 

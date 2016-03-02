@@ -21,7 +21,9 @@
      {:on-click clear} "Clear" [:i.pause.icon]]]
    [:div.item.right
     [:span "Love it? Hate it? Let me know: "
-     [:a {:href "http://twitter.com/escherize"} "@escherize"]]]])
+     [:a {:href "http://twitter.com/escherize"} "@escherize"]]]
+   [:div.item.right
+    [:a {:href "https://gitlab.com/escherize/cljsfiddle"} "git"]]])
 
 (defn cljs-pane []
   [:div.seven.wide.column
