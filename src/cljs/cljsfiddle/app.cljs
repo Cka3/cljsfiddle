@@ -1,18 +1,9 @@
 (ns cljsfiddle.app
-  (:require [reagent.core :as reagent :refer [atom]]
-            [replumb.core :as replumb]))
+  (:require [reagent.core :as r]
+            [cljs.js :refer [eval-str empty-state js-eval]]))
+(enable-console-print!)
 
-(defn some-component []
-  [:div
-   [:h3 "I am a component!"]
-   [:p.someclass
-    "I have " [:strong "bold"]
-    [:span {:style {:color "red"}} " and red"]
-    " text."]])
-
-(defn calling-component []
-  [:div "Parent component"
-   [some-component]])
+(defonce cljs-string (r/atom "[:h1 \"Hello World!\"]"))
 
 (declare run clear)
 
@@ -36,8 +27,6 @@
    [:div "go"]
    [:div "here"]])
 
-(defonce cljs-string (atom "[:h1 \"Hello World!\"]"))
-
 (defn cljs-pane []
   [:div.seven.wide.column
    [:h2.ui.dividing.header "ClojureScript"]
@@ -48,7 +37,7 @@
 
 (defn dom-pane []
   [:div.seven.wide.column
-   [:h2.ui.dividing.header "DOM"]
+   [:h2.ui.dividing.header "Output"]
    [:div#baby-dom-target]])
 
 (defn home []
@@ -62,16 +51,34 @@
      [cljs-pane]
      [dom-pane]]]])
 
+(defn my-eval [cljs-string]
+  (eval-str (empty-state)
+            (str "(ns cljs.user) " cljs-string)
+            'dummy-symbol
+            {:ns 'cljs.user
+             :eval js-eval
+             :dev-emits-var true
+             :load (fn [& _] {:lang :clj :source ""})
+             :context :statement}
+            (fn [{:keys [error value] :as x}]
+              (if error
+                (js/console.log error)
+                value))))
+
 (defn run []
-  (reagent/render-component
-   (fn [] [:h2 "hi"])
+  (r/render-component
+   (my-eval @cljs-string)
    (.getElementById js/document "baby-dom-target")))
 
 (defn clear []
-  (reagent/render-component
-   (fn [] [:div ""])
+  (r/render-component
+   (fn [] [:div.ui.item
+           [:p "Enter code that returns some hiccup like [:h1 \"Lemons\"]"]
+           [:h4 "Waiting..."]])
    (.getElementById js/document "baby-dom-target")))
 
+
 (defn init []
-  (reagent/render-component [home]
-                            (.getElementById js/document "container")))
+  (r/render-component
+   [home]
+   (.getElementById js/document "container")))
