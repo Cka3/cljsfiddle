@@ -10,7 +10,6 @@
                  ;; cljs
                  [org.clojure/clojurescript "1.7.122"]
                  [reagent "0.5.0"]
-                 [replumb "0.1.5-3"]
 
                  ;; cider
                  [cider/cider-nrepl "0.10.2"]
@@ -63,4 +62,6 @@
 (deftask cider-dev
   "Adds cider middleware to the cljs thing."
   []
-  (comp (cider) (repl) (dev)))
+  (comp (cider)
+        (repl)
+        (dev)))
