@@ -2,18 +2,22 @@
  :source-paths    #{"src/cljs"}
  :resource-paths  #{"resources"}
  :dependencies '[;; boot
-                 [adzerk/boot-cljs          "1.7.48-6"   :scope "test"]
-                 [adzerk/boot-cljs-repl     "0.2.0"      :scope "test"]
-                 [adzerk/boot-reload        "0.4.1"      :scope "test"]
-                 [pandeiro/boot-http        "0.6.3"      :scope "test"]
+                 [adzerk/boot-cljs          "1.7.228-1" :scope "test"]
+                 [adzerk/boot-cljs-repl     "0.3.0"     :scope "test"]
+                 [adzerk/boot-reload        "0.4.5"     :scope "test"]
+                 [pandeiro/boot-http        "0.7.3"     :scope "test"]
+                 [com.cemerick/piggieback   "0.2.1"     :scope "test"]
+                 [weasel                    "0.7.0"     :scope "test"]
+                 [org.clojure/tools.nrepl   "0.2.12"    :scope "test"]
 
                  ;; cljs
-                 [org.clojure/clojurescript "1.7.122"]
-                 [reagent "0.5.0"]
+                 [org.clojure/clojurescript "1.7.228"]
+                 [reagent                   "0.6.0-alpha"]
+
 
                  ;; cider
-                 [cider/cider-nrepl "0.10.2"]
-                 [refactor-nrepl "2.0.0"]])
+                 [cider/cider-nrepl         "0.10.2"]
+                 [refactor-nrepl            "2.0.0"]])
 
 (require
  '[adzerk.boot-cljs      :refer [cljs]]
@@ -37,9 +41,7 @@
   identity)
 
 (deftask development []
-  (task-options! cljs {:optimizations :none
-                       :static-fns true
-                       :source-map true}
+  (task-options! cljs {:optimizations :none :source-map true}
                  reload {:on-jsload 'cljsfiddle.app/init})
   identity)
 
