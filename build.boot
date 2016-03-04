@@ -13,7 +13,7 @@
                  ;; cljs
                  [org.clojure/clojurescript "1.7.228"]
                  [reagent                   "0.6.0-alpha"]
-
+                 [cljs-ajax                 "0.5.3"]
 
                  ;; cider
                  [cider/cider-nrepl         "0.10.2"]
