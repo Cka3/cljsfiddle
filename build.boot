@@ -13,10 +13,11 @@
                  ;; cljs
                  [org.clojure/clojurescript "1.7.228"]
                  [reagent                   "0.6.0-alpha"]
-
+                 [cljs-ajax                 "0.5.3"]
+                 [com.cemerick/url          "0.1.1"]
 
                  ;; cider
-                 [cider/cider-nrepl         "0.10.2"]
+                 [cider/cider-nrepl         "0.11.0"]
                  [refactor-nrepl            "2.0.0"]])
 
 (require
@@ -48,24 +49,4 @@
 (deftask dev
   "Simple alias to run application in development mode"
   []
-  (comp (development)
-        (run)))
-
-(deftask cider "CIDER profile"
-  []
-  (require 'boot.repl)
-  (swap! @(resolve 'boot.repl/*default-dependencies*)
-         concat '[[org.clojure/tools.nrepl "0.2.12"]
-                  [cider/cider-nrepl "0.10.2"]
-                  [refactor-nrepl "2.0.0"]])
-  (swap! @(resolve 'boot.repl/*default-middleware*)
-         concat '[cider.nrepl/cider-middleware
-                  refactor-nrepl.middleware/wrap-refactor])
-  identity)
-
-(deftask cider-dev
-  "Adds cider middleware to the cljs thing."
-  []
-  (comp (cider)
-        (repl)
-        (dev)))
+  (comp (development) (run)))

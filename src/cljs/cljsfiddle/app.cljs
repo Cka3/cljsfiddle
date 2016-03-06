@@ -2,7 +2,9 @@
   (:require [reagent.core :as r]
             [cljsfiddle.samples-pane :refer [samples-pane]]
             [cljsfiddle.db :refer [db]]
-            [cljs.js :refer [eval-str empty-state js-eval]]))
+            [cljs.js :refer [eval-str empty-state js-eval]]
+            [cljsfiddle.gist :as gist]
+            [cemerick.url :as url]))
 
 (enable-console-print!)
 (set! js/COMPILED true)
@@ -19,6 +21,11 @@
    [:div.item
     [:div.ui.right.labeled.icon.primary.button
      {:on-click clear} "Clear" [:i.pause.icon]]]
+   [:div.item
+    [:div.ui.right.labeled.icon.primary.button
+     {:on-click #(gist/save @db)}
+     "Save"
+     [:i.save.icon]]]
    [:div.item.right
     [:span "Love it? Hate it? Let me know: "
      [:a {:href "http://twitter.com/escherize"} "@escherize"]]]
@@ -60,7 +67,7 @@
 
 (defn my-eval [cljs-string]
   (eval-str (empty-state)
-            (str "(ns cljs-user)
+            (str "(ns cljs.user)
                   (def atom reagent.core/atom)"
                  cljs-string)
             'dummy-symbol
@@ -90,7 +97,13 @@
            [:h4 "Waiting..."]])
    (.getElementById js/document "baby-dom-target")))
 
+(defn check-load-gist []
+  (when-let [gist-id (-> (gist/current-url) :anchor url/query->map (get "gist"))]
+    (gist/load gist-id db run)))
+
+
 (defn init []
+  (check-load-gist)
   (r/render-component
    [home]
    (.getElementById js/document "container")))
