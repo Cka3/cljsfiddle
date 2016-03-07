@@ -6,15 +6,25 @@
     <title>CLJS Fiddle</title>
   </head>
   <body>
+    <style>
+     .loading-image {
+         margin:-60px 0 0 -60px;
+         -webkit-animation:spin 4s linear infinite;
+         -moz-animation:spin 4s linear infinite;
+         animation:spin 4s linear infinite;
+     }
+     @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+     @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+     @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+    </style>
     <div id="container">
       <div class="introduction">
-        <h1 class="ui header centered" style="margin-top: 80px">CLJS Fiddle</h1>
-        <p class="ui header centered small">Takes a while to load cljs that evals itself..</p>
-        <p class="ui header centered">but it's worth it!</p>
-        <div style="margin: auto;">
-          <img style="height: 350px; margin: 50px auto; display: block;" src="img/cljs.png">
-        </div>
-        </div>
+        <h1 class="ui header centered" style="margin-top: 80px; font-size: 60px">Loading CLJS Fiddle...</h1>
+      </div>
+      <img class="loading-image"
+           style="margin: 20px auto; height: 250px; display: block;"
+           src="img/cljs.png">
+    </div>
     </div>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/semantic.min.js"></script>
