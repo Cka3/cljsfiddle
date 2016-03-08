@@ -3,16 +3,18 @@
             [cemerick.url :as url]
             [reagent.core :as r]))
 
-(defn load [id atom & [callback]]
+(defn load [id & [callback]]
+  "Finds a gist by id, swaps it into atom's :text key,
+   and calls callback when it's given."
   (GET (str "https://api.github.com/gists/" id)
        {:with-credentials? false
         :handler (fn [x]
-                   (let [r (->> (get x "files")
-                                vals
-                                (keep (fn [x] (get x "content")))
-                                first)]
-                     (reset! atom r)
-                     (when callback (callback))))}))
+                   (let [response-text
+                         (->> (get x "files")
+                              vals
+                              (keep (fn [x] (get x "content")))
+                              first)]
+                     (when callback (callback response-text))))}))
 
 (defn set-url [url]
   (set! (.-location js/window) url))
@@ -20,14 +22,14 @@
 (defn current-url []
   (url/url (-> js/window .-location .-href)))
 
-(defn current-query [current-url]
-  (url/query->map (apply str (rest (:anchor current-url)))))
-
 (defn assoc-anchor [{:keys [anchor] :as url} key value]
   (let [anchor-map (merge (url/query->map anchor)
                           {(name key) (str value)})
         anchor-str (url/map->query anchor-map)]
     (assoc url :anchor anchor-str)))
+
+(defn get-anchor [key]
+  (-> (current-url) :anchor url/query->map (get (name key))))
 
 (defn save [string]
   "Saves a gist, and changes url to url#gist={id}
@@ -46,17 +48,3 @@
                           str
                           set-url)))
          :error-handler (fn [x] (js/console.log x))}))
-
-
-
-(comment
-
-
-
-  (clj->js {:a 1})
-
-  (get "a5ab5722b12408ec0d1b")
-
-  r
-
-  )

@@ -15,6 +15,7 @@
                  [reagent                   "0.6.0-alpha"]
                  [cljs-ajax                 "0.5.3"]
                  [com.cemerick/url          "0.1.1"]
+                 [parinfer                  "0.2.3"]
 
                  ;; cider
                  [cider/cider-nrepl         "0.11.0"]

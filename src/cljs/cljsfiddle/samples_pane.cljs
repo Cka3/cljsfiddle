@@ -1,12 +1,11 @@
 (ns cljsfiddle.samples-pane
-  (:require [cljsfiddle.db :refer [db]]))
+  (:require [cljsfiddle.state :refer [update-text]]))
 
 (defn option-button [title fill]
   [:div.item
    [:div.ui.primary.button
     {:style {:width "100%"}
-     :on-click (fn [] (reset! db fill)
-                 #_(run))}
+     :on-click (fn [] (update-text fill))}
     title]])
 
 (defn samples-pane []
@@ -47,7 +46,6 @@
 [simple-parent]"]
 
     [option-button "Hello Component"
-
 "(defn hello-component [name]
   [:p \"Hello, \" name \"!\"])
 
@@ -170,12 +168,12 @@
   [:h1 message])
 
 (defn clock []
-  (let [time-str (-> @timer
-                     .toTimeString
+  (let [time-str (-> (.toTimeString @timer)
                      (clojure.string/split \" \")
-                      first)]
+                     first)]
     [:span {:style {:color @time-color
-                   :font-size \"30px\"}} time-str]))
+                    :font-size \"30px\"}}
+           time-str]))
 
 (defn color-input []
   [:div {:style {:margin-top \"10px\"}}
