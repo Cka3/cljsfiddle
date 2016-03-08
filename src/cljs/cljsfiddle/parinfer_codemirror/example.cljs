@@ -41,13 +41,13 @@
   "Create a parinfer editor."
   ([element-id key-] (create-editor! element-id key- {}))
   ([element-id key- opts]
-   (when-not (get @state key-)
-     (let [element (js/document.getElementById element-id)
-           cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
-           wrapper (.getWrapperElement cm)]
-       (set! (.-id wrapper) (str "cm-" element-id))
-       (parinferize! cm key- (:parinfer-mode opts) "")
-       cm))))
+   (when (get @state key-) (swap! state dissoc key-))
+   (let [element (js/document.getElementById element-id)
+         cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
+         wrapper (.getWrapperElement cm)]
+     (set! (.-id wrapper) (str "cm-" element-id))
+     (parinferize! cm key- (:parinfer-mode opts) "")
+     cm)))
 
 #_(defn render-dev! []
     (create-editor! "code-indent-mode" :indent-mode)
