@@ -28,14 +28,15 @@
 
 (defn create-regular-editor!
   "Create a non-parinfer editor."
-  ([element-id] (create-regular-editor! element-id {}))
-  ([element-id opts]
-   (let [element (js/document.getElementById element-id)]
-     (when-not (= "none" (.. element -style -display))
-       (let [cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts {:mode "clojure"} opts)))
-             wrapper (.getWrapperElement cm)]
-         (set! (.-id wrapper) (str "cm-" element-id))
-         cm)))))
+  ([element-id key-] (create-regular-editor! element-id key- {}))
+  ([element-id key- opts]
+   (when-not (get @state key-)
+     (let [element (js/document.getElementById element-id)
+           cm (js/CodeMirror.fromTextArea element (clj->js (merge editor-opts opts)))
+           wrapper (.getWrapperElement cm)]
+       (set! (.-id wrapper) (str "cm-" element-id))
+       (parinferize! cm key- (:parinfer-mode opts) "")
+       cm))))
 
 (defn create-editor!
   "Create a parinfer editor."
@@ -49,9 +50,9 @@
        (parinferize! cm key- (:parinfer-mode opts) "")
        cm))))
 
-(defn render-dev! []
-  (create-editor! "code-indent-mode" :indent-mode)
-  (create-editor! "code-paren-mode" :paren-mode {:parinfer-mode :paren-mode})
-  (start-editor-sync!))
+#_(defn render-dev! []
+    (create-editor! "code-indent-mode" :indent-mode)
+    (create-editor! "code-paren-mode" :paren-mode {:parinfer-mode :paren-mode})
+    (start-editor-sync!))
 
 #_(render-dev!)
