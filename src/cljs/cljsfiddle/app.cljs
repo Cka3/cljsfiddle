@@ -5,7 +5,7 @@
             [cljsfiddle.gist :as gist]
             [cemerick.url :as url]
             [cljsfiddle.parinfer-codemirror.editor :refer [start-editor-sync!]]
-            [cljsfiddle.state :refer [update-text read-state]]
+            [cljsfiddle.state :refer [state update-text read-state]]
             [cljsfiddle.parinfer-codemirror.example :as pex]))
 
 (enable-console-print!)
@@ -103,6 +103,7 @@
 (defn home []
   [:div {:style {:width "100%" :height "100%"}}
    [nav-bar]
+   #_[:pre (pr-str @state)]
    [:div.ui.internally.divided.grid
     [:div.row [samples-pane] [cljs-pane] [dom-pane]]]])
 

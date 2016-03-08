@@ -19,3 +19,6 @@
 
 (defn read-state []
   (-> @state :codemirror-box :text))
+
+(defn cm-instance []
+  (-> @state :codemirror-box :cm))

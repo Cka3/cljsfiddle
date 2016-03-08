@@ -1,5 +1,5 @@
 (ns cljsfiddle.samples-pane
-  (:require [cljsfiddle.state :refer [update-text]]))
+  (:require [cljsfiddle.state :refer [update-text cm-instance]]))
 
 (defn option-button [title fill]
   [:div.item
@@ -10,6 +10,16 @@
 
 (defn samples-pane []
   [:div.two.wide.column
+   #_[:input.ui.button {:type "button"
+                      :value "cp"
+                      :on-click (fn []
+                                  (js/console.log "cp mode")
+                                  (.setOption (cm-instance) "mode" "clojure-parinfer"))}]
+   #_[:input.ui.button {:type "button"
+                      :value "clj"
+                      :on-click (fn []
+                                  (js/console.log "clj mode")
+                                  (.setOption (cm-instance) "mode" "clojure"))}]
    [:h2.ui.dividing.header "Samples"]
    [:div.ui.list
     [option-button "Simple h1 Example" "[:h1 \"Lemon\"]"]
