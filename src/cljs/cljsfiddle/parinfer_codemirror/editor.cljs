@@ -1,16 +1,12 @@
 (ns cljsfiddle.parinfer-codemirror.editor
   "Glues Parinfer's formatter to a CodeMirror editor"
   (:require
-    [clojure.string :refer [join]]
-    [cljsfiddle.state :refer [state
-                                 empty-editor-state]]
-    [cljsfiddle.parinfer-codemirror.editor-support :refer [update-cursor!
-                                          fix-text!
-                                          cm-key
-                                          IEditor
-                                          get-prev-state
-                                          frame-updated?
-                                          set-frame-updated!]]))
+   [clojure.string :refer [join]]
+   [cljsfiddle.state :refer [state empty-editor-state]]
+   [cljsfiddle.parinfer-codemirror.editor-support
+    :refer [update-cursor! fix-text! cm-key IEditor
+            get-prev-state frame-updated? set-frame-updated!]]
+   [goog.dom :as gdom]))
 
 ;;----------------------------------------------------------------------
 ;; Life Cycle events
@@ -71,11 +67,11 @@
 
        ;; Extend the code mirror object with some utility methods.
        (specify! cm
-                 IEditor
-                 (get-prev-state [this] prev-editor-state)
-                 (cm-key [this] key-)
-                 (frame-updated? [this] (get-in @frame-updates [key- :frame-updated?]))
-                 (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value)))
+         IEditor
+         (get-prev-state [this] prev-editor-state)
+         (cm-key [this] key-)
+         (frame-updated? [this] (get-in @frame-updates [key- :frame-updated?]))
+         (set-frame-updated! [this value] (swap! frame-updates assoc-in [key- :frame-updated?] value)))
 
        ;; handle code mirror events
        (.on cm "change" on-change)
