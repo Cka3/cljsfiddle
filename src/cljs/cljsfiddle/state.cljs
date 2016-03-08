@@ -12,10 +12,10 @@
 
 
 (defn update-state-text [state new-text]
-  (assoc-in state [:indent-mode :text] new-text))
+  (assoc-in state [:codemirror-box :text] new-text))
 
 (defn update-text [new-text]
   (swap! state #(update-state-text % new-text)))
 
 (defn read-state []
-  (-> @state :indent-mode :text))
+  (-> @state :codemirror-box :text))

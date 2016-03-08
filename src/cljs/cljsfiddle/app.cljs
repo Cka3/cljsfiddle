@@ -73,7 +73,7 @@
    {:reagent-render (fn [] [:div {:style {:border "1px black solid"}}
                             [:textarea#codezone {:default-value (read-state)}]])
     :component-did-mount (fn [_]
-                           (pex/create-editor! "codezone" :indent-mode)
+                           (pex/create-editor! "codezone" :codemirror-box)
                            (start-editor-sync!)
                            (update-text initial-code))}))
 (defn cljs-pane []
