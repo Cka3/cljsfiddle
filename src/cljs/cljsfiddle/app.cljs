@@ -31,17 +31,18 @@
                   (js/console.log (str error)))
                 value))))
 
-(defn run []
-  (r/render-component
-   (my-eval (read-state))
-   (.getElementById js/document "baby-dom-target")))
-
 (defn clear []
   (r/render-component
    (fn [] [:div.ui.item
            [:p "Enter code that returns some hiccup like "
             [:code "[:h1 \"Lemons\"]"]]
            [:h4 "Waiting..."]])
+   (.getElementById js/document "baby-dom-target")))
+
+(defn run []
+  (clear)
+  (r/render-component
+   (my-eval (read-state))
    (.getElementById js/document "baby-dom-target")))
 
 (defn nav-bar []
