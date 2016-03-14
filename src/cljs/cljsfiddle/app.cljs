@@ -115,8 +115,12 @@
                  (update-text new-text)
                  (run)))))
 
+(defn toggle-loading []
+  (.removeClass (js/$ "body") "loading"))
+
 (defn init []
   (check-load-gist)
+  (toggle-loading)
   (r/render-component
    [home]
    (.getElementById js/document "container")))
