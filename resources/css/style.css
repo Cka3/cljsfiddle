@@ -14,6 +14,7 @@ body.loading {
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
+  background: #333;
 }
 
 .inner-wrapper {
@@ -183,6 +184,7 @@ section h2 button .fa {
 
 footer {
   color: #999;
+  background: #333;
   padding: 10px;
 }
 
@@ -205,27 +207,27 @@ footer a:hover {
  * Loading Animation
  *----------------------------------------------------------------------------*/
 
-h1.loading {
+#loadingContainer h1 {
   color: #fff;
   font-size: 32px;
-  font-weight: 100;
+  font-weight: 300;
   text-align: center;
 }
 
-div.loading.outer {
+#loadingContainer .outer {
   margin: 0px auto 0 auto;
   overflow: hidden;
   padding-top: 150px;
   width: 700px;
 }
 
-div.loading.animation-target {
+#loadingContainer .animation-target {
   margin: 0 auto;
-  width: 120px;
+  width: 100px;
 }
 
 .animation-target {
-  animation: animation 3400ms linear infinite both;
+  animation: animation 2800ms linear infinite both;
 }
 
 @keyframes animation {
@@ -280,4 +282,31 @@ div.loading.animation-target {
   94.28% { transform: matrix3d(1, 0, 0, 0, 0.839, 1, 0, 0, 0, 0, 1, 0, 499.986, 0, 0, 1); }
   98.21% { transform: matrix3d(1, 0, 0, 0, 0.839, 1, 0, 0, 0, 0, 1, 0, 499.997, 0, 0, 1); }
   100% { transform: matrix3d(1, 0, 0, 0, 0.839, 1, 0, 0, 0, 0, 1, 0, 500, 0, 0, 1); }
+}
+
+.CodeMirror{
+  height: 682px;
+}
+
+h2.main-heading{
+  border: 1px #999 solid;
+  border-radius: 10px;
+  padding: auto 5px;
+  margin: 0px auto;
+  border-radius: .28571429rem;
+  background: #f9f9f9;
+}
+
+div#baby-dom-target{
+  margin-top: 20px;
+  padding-left: 20px;
+  font-size: 1.3em;
+  min-height: 728px;
+
+}
+
+hr.heading {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
 }

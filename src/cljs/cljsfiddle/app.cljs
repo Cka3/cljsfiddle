@@ -45,82 +45,116 @@
    (my-eval (read-state))
    (.getElementById js/document "baby-dom-target")))
 
-(defn nav-bar []
-  [:div.ui.menu
-   [:div.item [:img {:src "img/cljs.png"
-                     :style {:margin-right "5px"}}] "Fiddle"]
-   [:div.item
-    [:div.ui.right.labeled.icon.primary.button
-     {:on-click run} "Run" [:i.play.icon]]]
-   [:div.item
-    [:div.ui.right.labeled.icon.primary.button
-     {:on-click clear} "Clear" [:i.pause.icon]]]
-   [:div.item
-    [:div.ui.right.labeled.icon.primary.button
-     {:on-click #(gist/save (read-state))}
-     "Save"
-     [:i.save.icon]]]
-   [:div.item.right
-    [:span "Love it? Hate it? Let me know: "
-     [:a {:href "http://twitter.com/escherize"} "@escherize"]]]
-   [:div.item.right
-    [:a {:href "https://gitlab.com/escherize/cljsfiddle"} "git"]]])
-
-(def initial-code "The text that starts out in codemirror"
-  "[:h2 \"Welcome to CLJS Fiddle.\"]")
-
 (defn code-mirror []
   (r/create-class
-   {:reagent-render (fn [] [:div {:style {:border "1px black solid"}}
+   {:reagent-render (fn [] [:div
+                            {:style {:border "1px solid #9A9A9A"}}
                             [:textarea#codezone {:default-value (read-state)}]])
     :component-did-mount (fn [_]
                            (pex/create-editor! "codezone" :codemirror-box)
-                           (start-editor-sync!)
-                           (update-text initial-code))}))
+                           (start-editor-sync!))}))
+
+(defn fake-requires []
+  [:div.cm-s-default.CodeMirror
+   {:style {:height "auto"
+            :border "none"
+            :margin-bottom "10px"}}
+   [:div.CodeMirror-code
+    [:pre.CodeMirror-line
+     [:span {:style {:padding-right "0.1px"}}
+      [:span.cm-bracket "("]
+      [:span.cm-keyword "ns"] " " [:span.cm-def "cljsfiddle.app"]]]
+    [:pre.CodeMirror-line
+     [:span {:style {:padding-right "0.1px"}}
+      "  "
+      [:span.cm-bracket "("]
+      [:span.cm-atom ":require"]
+      " "
+      [:span.cm-bracket "["]
+      [:span.cm-variable "reagent.core"]
+      " "
+      [:span.cm-atom ":refer"]
+      " "
+      [:span.cm-bracket "["]
+      [:span.cm-builtin "atom"]
+      [:span.cm-bracket "]"]
+      [:span.cm-bracket.cm-eol "]])"]]]]])
+
 (defn cljs-pane []
   [:div.seven.wide.column
-   [:p.ui.dividing.header
-    [:span {:style {:font-size "24px"}} "ClojureScript"]
-    " "
-    [:span {:style {:font-size "12px"
-                    :text-align "right"}}
-     " (or " [:a {:href "https://reagent-project.github.io/"} "Reagent"] " more accurately!)"]]
+   [:h2 "ClojureScript"
+    [:div.ui.right.labeled.icon.primary.button
+     {:style {:margin-left "10px"} :on-click run}
+     "Run" [:i.play.icon]]
+    [:div#save-btn.ui.right.labeled.icon.button
+     {:style {:margin-left "10px"} :on-click #(gist/save (read-state))}
+     "Save" [:i.save.icon]]]
+   [:hr.heading]
+   ;; cljs 'require' stuff:
    [:div.ui.form
-    [:div.field
-     [:div {:style {:font-family "monospace"
-                    :margin-top "10px"}} "(ns cljsfiddle.app"]
-     [:div {:style {:font-family "monospace"
-                    :margin-left "10px"
-                    :margin-bottom "5px"}}
-      "(:require [reagent.core :refer [atom]]))"]
-     [code-mirror]]]])
-
+    [fake-requires]
+    [code-mirror]]])
 
 (defn dom-pane []
   [:div.seven.wide.column
-   [:h2.ui.dividing.header "Output"]
-   [:div#baby-dom-target {:style {:font-size "18px"}}]])
+   [:h2 "Output"
+    [:div.ui.right.labeled.icon.button
+     {:style {:margin-left "30px"} :on-click clear}
+     "Clear" [:i.erase.icon]]]
+   [:hr.heading]
+   [:div#baby-dom-target {:style {:font-size "1.3em"}}]])
+
+(defn header []
+  [:header
+   [:div.inner-wrapper
+    [:h1
+     [:img {:src "img/cljs-ring.svg" :alt "CLJS Ring"}]
+     " cljsfiddle" [:span.tld ".com"]]
+    #_[:div.right
+       [:a {:href "#"}
+        [:i.help.icon] "Help"]
+       [:a {:href "#"}
+        [:i.send.icon] "Share"]]]])
+
+(defn footer []
+  [:footer
+   [:div.inner-wrapper
+    [:p "cljsfiddle.com is an "
+     [:a {:href "https://gitlab.com/escherize/cljsfiddle/"} "open source project"]
+     " by "
+     [:a {:href "https://twitter.com/escherize"} "@escherize"]]
+    [:p "feecback welcome :)"]]])
 
 (defn home []
   [:div {:style {:width "100%" :height "100%"}}
-   [nav-bar]
-   #_[:pre (pr-str @state)]
-   [:div.ui.internally.divided.grid
-    [:div.row [samples-pane] [cljs-pane] [dom-pane]]]])
+   [header]
+   [:div.ui.fluid.container
+    {:style {:padding "20px"
+             :min-height "100%"
+             :background-color "#fff"}}
+    [:div.ui.grid
+     [:div.row
+      [samples-pane run]
+      [cljs-pane]
+      [dom-pane]]]]
+   [footer]])
 
 (defn check-load-gist []
-  (when-let [gist-id (gist/get-anchor "gist")]
-    (gist/load gist-id
-               (fn [new-text]
-                 (update-text new-text)
-                 (run)))))
+  "Fuck why does this work?"
+  (let [gist-id (or (gist/get-anchor "gist")
+                    "7b1f4ec06e90cc683ebb")]
+    (gist/load gist-id (fn [new-text]
+                         (update-text new-text)
+                         (run)))))
 
 (defn toggle-loading []
-  (.removeClass (js/$ "body") "loading"))
+  (.fadeOut (js/$ "#loadingContainer") "fast"
+            (fn [] (.fadeIn (js/$ "#appContainer") "fast"))))
 
 (defn init []
   (check-load-gist)
-  (toggle-loading)
   (r/render-component
    [home]
-   (.getElementById js/document "container")))
+   (.getElementById js/document "appContainer"))
+  (toggle-loading)
+  (run))

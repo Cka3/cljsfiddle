@@ -1,34 +1,25 @@
 (ns cljsfiddle.samples-pane
   (:require [cljsfiddle.state :refer [update-text cm-instance]]))
 
-(defn option-button [title fill]
-  [:div.item
-   [:div.ui.primary.button
-    {:style {:width "100%"}
-     :on-click (fn [] (update-text fill))}
-    title]])
+(defn option-button [title fill & [callback]]
+  [:div.ui.button
+   {:on-click (fn []
+                (update-text fill)
+                (callback))}
+   title])
 
-(defn samples-pane []
+(defn samples-pane [& [callback]]
   [:div.two.wide.column
-   #_[:input.ui.button {:type "button"
-                      :value "cp"
-                      :on-click (fn []
-                                  (js/console.log "cp mode")
-                                  (.setOption (cm-instance) "mode" "clojure-parinfer"))}]
-   #_[:input.ui.button {:type "button"
-                      :value "clj"
-                      :on-click (fn []
-                                  (js/console.log "clj mode")
-                                  (.setOption (cm-instance) "mode" "clojure"))}]
-   [:h2.ui.dividing.header "Samples"]
-   [:div.ui.list
-    [option-button "Simple h1 Example" "[:h1 \"Lemon\"]"]
+   [:span {:style {:text-align :center}} [:h2 "Examples"]]
+   [:div.ui.vertical.basic.buttons {:style {:margin-top "28px"}}
+    [option-button "Simple h1" "[:h1 \"Lemon\"]" callback]
 
     [option-button "Simple h1 Component"
 "(defn h1-component [& items]
       [:h1 items])
 
-[h1-component \"Green Eggs\" \" and \" \"ham -\" \"YUM!\"]"]
+[h1-component \"Green Eggs\" \" and \" \"ham -\" \"YUM!\"]"
+     callback]
 
     [option-button "Single Component"
 "(defn simple-component []
@@ -38,7 +29,8 @@
     \"I have \" [:strong \"bold\"]
     [:span {:style {:color \"red\"}} \" and red \"] \"text.\"]])
 
-[simple-component]"]
+[simple-component]"
+     callback]
 
     [option-button "Parent Component"
 "(defn simple-component []
@@ -53,7 +45,8 @@
    [:p \"I include a simple-component.\"]
    [simple-component]])
 
-[simple-parent]"]
+[simple-parent]"
+     callback]
 
     [option-button "Hello Component"
 "(defn hello-component [name]
@@ -68,7 +61,8 @@
  ;; Notice it's perfectly composable:
  [hello-component
   [:span {:style {:color \"orange\"}}
-   \"Lemon\"]]]"]
+   \"Lemon\"]]]"
+     callback]
 
     [option-button "Lister Component"
 "(defn lister [items]
@@ -85,7 +79,8 @@
  [:h1 \"Lister:\"]
  [lister [\"Apple\" \"Orange\" \"Grapefruit\"]]
  [:h1 \"Lister User:\"]
- [lister-user]]"]
+ [lister-user]]"
+     callback]
 
     [option-button "Counter Component"
 "(def click-count (atom 0))
@@ -99,7 +94,8 @@
              :value \"Click me!\"
              :on-click #(swap! click-count inc)}]]])
 
-[counting-component]"]
+[counting-component]"
+     callback]
 
     [option-button "Timer Component"
 "(defn timer-component []
@@ -109,7 +105,8 @@
       [:div
        \"Seconds Elapsed: \" @seconds-elapsed])))
 
-[timer-component]"]
+[timer-component]"
+     callback]
 
     [option-button "Form Component"
 "(defn atom-input [value]
@@ -124,7 +121,8 @@
        [:p \"The value is now: \" @val]
        [:p \"Change it here: \" [atom-input val]]])))
 
-[shared-state]"]
+[shared-state]"
+     callback]
 
     [option-button "BMI Calculator Component"
 "(def bmi-data (atom {:height 180 :weight 80}))
@@ -164,7 +162,8 @@
       [:span {:style {:color color}} diagnose]
       [slider :bmi bmi 10 50]]]))
 
-[bmi-component]"]
+[bmi-component]"
+     callback]
 
     [option-button "Simple Component"
 "(defonce timer (atom (js/Date.)))
@@ -198,4 +197,5 @@
    [clock]
    [color-input]])
 
-[simple-example]"]]])
+[simple-example]"
+     callback]]])

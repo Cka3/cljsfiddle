@@ -1,3 +1,8 @@
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+}
+
 .cm-s-default .cm-keyword  {color: #a71d5d;}    /* clojure core forms */
 .cm-s-default .cm-builtin  {color: #a71d5d;}    /* clojure core library */
 .cm-s-default .cm-string   {color: #183691;}    /* clojure strings */

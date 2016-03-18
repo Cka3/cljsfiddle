@@ -23,6 +23,8 @@
 (def editor-opts
   {:mode "clojure-parinfer"
    :matchBrackets true
+   :viewportMargin Infinity
+   :height "100%"
    :extraKeys {:Tab on-tab
                :Shift-Tab "indentLess"}})
 
