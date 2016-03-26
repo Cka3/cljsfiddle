@@ -11,7 +11,7 @@
                  [org.clojure/tools.nrepl   "0.2.12"    :scope "test"]
 
                  ;; cljs
-                 [org.clojure/clojurescript "1.7.228"]
+                 [org.clojure/clojurescript "1.8.34"]
                  [reagent                   "0.6.0-alpha"]
                  [cljs-ajax                 "0.5.3"]
                  [com.cemerick/url          "0.1.1"]
@@ -39,7 +39,7 @@
         (build)))
 
 (deftask production []
-  (task-options! cljs {:optimizations :advanced})
+  (task-options! cljs {:optimizations :whitespace})
   identity)
 
 (deftask development []
