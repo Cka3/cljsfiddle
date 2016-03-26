@@ -29,7 +29,8 @@
 
 (deftask build []
   (comp (speak)
-        (cljs)))
+        (cljs)
+        (sift :include #{#"\.out"} :invert true)))
 
 (deftask run []
   (comp (serve)
