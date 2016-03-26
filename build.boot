@@ -30,7 +30,8 @@
 (deftask build []
   (comp (speak)
         (cljs)
-        (sift :include #{#"\.out"} :invert true)))
+        (sift :include #{#"\.out"} :invert true)
+        (sift :include #{#"codemirror\/mode/(?!clojure)"} :invert true)))
 
 (deftask run []
   (comp (serve)
