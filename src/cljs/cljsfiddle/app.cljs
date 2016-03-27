@@ -19,7 +19,8 @@
                     (:require reagent.core))
 
                   (def atom reagent.core/atom)"
-                 cljs-string)
+                 (or (not-empty cljs-string)
+                     "[:div]"))
             'dummy-symbol
             {:ns 'cljs.user
              :eval js-eval
