@@ -14,15 +14,19 @@
 (defn my-eval [cljs-string]
   (js/console.log "EVAL RECIEVED: " cljs-string)
   (eval-str (empty-state)
-            (str "(ns cljs.user)
+            (str "(ns cljs.user
+                    (:refer-clojure :exclude [atom])
+                    (:require reagent.core))
+
                   (def atom reagent.core/atom)"
-                 cljs-string)
+                 (or (not-empty cljs-string)
+                     "[:div]"))
             'dummy-symbol
             {:ns 'cljs.user
              :eval js-eval
              :static-fns true
              :def-emits-var false
-             :load (fn [& _] {:lang :clj :source "."})
+             :load (fn [name cb] (cb {:lang :clj :source ""}))
              :context :statement}
             (fn [{:keys [error value] :as x}]
               (if error
