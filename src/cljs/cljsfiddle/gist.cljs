@@ -37,7 +37,7 @@
   (POST "https://api.github.com/gists"
         {:params {:description "???"
                   :public true
-                  :files {"cljsfiddle_save.edn"
+                  :files {"cljsfiddlefilesave.edn"
                           {"content" string}}}
          :format :json
          :keywords? true
