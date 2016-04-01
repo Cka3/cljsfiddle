@@ -127,7 +127,7 @@
      [:a {:href "https://gitlab.com/escherize/cljsfiddle/"} "open source project"]
      " by "
      [:a {:href "https://twitter.com/escherize"} "@escherize"]]
-    [:p "feecback welcome :)"]]])
+    [:p "feedback welcome :)"]]])
 
 (defn home []
   [:div {:style {:width "100%" :height "100%"}}
