@@ -60,31 +60,60 @@
                            (pex/create-editor! "codezone" :codemirror-box)
                            (start-editor-sync!))}))
 
+
 (defn fake-requires []
   [:div.cm-s-default.CodeMirror
    {:style {:height "auto"
             :border "none"
             :margin-bottom "10px"}}
    [:div.CodeMirror-code
-    [:pre.CodeMirror-line
-     [:span {:style {:padding-right "0.1px"}}
-      [:span.cm-bracket "("]
-      [:span.cm-keyword "ns"] " " [:span.cm-def "cljsfiddle.app"]]]
+
+   [:pre.CodeMirror-line
+    [:span {:style {:padding-right "0.1px"}}
+     [:span.cm-bracket "("]
+     [:span.cm-keyword "ns"] " " [:span.cm-def "cljs.user"]]]
+
+
     [:pre.CodeMirror-line
      [:span {:style {:padding-right "0.1px"}}
       "  "
       [:span.cm-bracket "("]
-      [:span.cm-atom ":require"]
+      [:span.cm-atom ":refer-clojure"]
+      " "
+      [:span.cm-atom ":exclude"]
       " "
       [:span.cm-bracket "["]
-      [:span.cm-variable "reagent.core"]
-      " "
-      [:span.cm-atom ":refer"]
-      " "
-      [:span.cm-bracket "["]
-      [:span.cm-builtin "atom"]
+      [:span.cm-variable "atom"]
       [:span.cm-bracket "]"]
-      [:span.cm-bracket.cm-eol "]])"]]]]])
+      [:span.cm-bracket.cm-eol ")"]]]
+
+
+      [:pre.CodeMirror-line
+       [:span {:style {:padding-right "0.1px"}}
+        "  "
+        [:span.cm-bracket "("]
+        [:span.cm-atom ":require"]
+        " "
+        [:span.cm-bracket "["]
+        [:span.cm-variable "reagent.core"]
+        [:span.cm-bracket "]"]
+        [:span.cm-bracket.cm-eol ")"]]]
+
+      [:pre.CodeMirror-line
+         [:span {:style {:padding-right "0.1px"}}
+          "  "
+          [:span.cm-bracket ""]
+          [:span.cm-atom "         "]
+          " "
+          [:span.cm-bracket "["]
+          [:span.cm-variable "re-com.core"]
+          " "
+          [:span.cm-atom ":as"]
+          " "
+          [:span.cm-variable "re-com"]
+          [:span.cm-bracket "]"]
+          [:span.cm-bracket.cm-eol ")"]]]
+        ]])
 
 (defn cljs-pane []
   [:div.seven.wide.column
