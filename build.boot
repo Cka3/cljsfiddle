@@ -13,6 +13,8 @@
                  ;; cljs
                  [org.clojure/clojurescript "1.8.34"]
                  [reagent                   "0.6.0-alpha"]
+                 [re-frame                  "0.7.0"]
+                 [re-com                    "0.8.3"]
                  [cljs-ajax                 "0.5.3"]
                  [com.cemerick/url          "0.1.1"]
                  [parinfer                  "0.2.3"]
@@ -30,11 +32,11 @@
 (deftask build []
   (comp (speak)
         (cljs)
-        (sift :include #{#"\.out"} :invert true)
-        (sift :include #{#"codemirror\/mode/(?!clojure)"} :invert true)))
+        #_(sift :include #{#"\.out"} :invert true)
+        #_(sift :include #{#"codemirror\/mode/(?!clojure)"} :invert true)))
 
 (deftask run []
-  (comp (serve)
+  (comp (serve :dir "target")
         (watch)
         (cljs-repl)
         (reload)

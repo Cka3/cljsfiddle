@@ -1,5 +1,6 @@
 (ns cljsfiddle.app
   (:require [reagent.core :as r]
+            [re-com.core :as re-com]
             [cljsfiddle.samples-pane :refer [samples-pane]]
             [cljs.js :refer [eval-str empty-state js-eval]]
             [cljsfiddle.gist :as gist]
@@ -16,7 +17,8 @@
   (eval-str (empty-state)
             (str "(ns cljs.user
                     (:refer-clojure :exclude [atom])
-                    (:require reagent.core))
+                    (:require [reagent.core]
+                              [re-com.core :as re-com]))
 
                   (def atom reagent.core/atom)"
                  (or (not-empty cljs-string)
